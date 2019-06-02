@@ -90,13 +90,17 @@ def youAsPlayer():
         while True:
             if getHandValue(dealerHand) > 21:
                 print("House is busted, Player Wins!\n")
-                player.saldo += bet*2
-                break
-            if checkForBlackJack(dealerHand) and not checkForBlackJack(player.playerHand):
-                print("House has BlackJack, House Wins!\n")
-                player.saldo -= bet
-                break
+                player.saldo += bet
+                break 
             if getHandValue(dealerHand) == getHandValue(player.playerHand):
+                if checkForBlackJack(dealerHand) and not checkForBlackJack(player.playerHand):
+                    print("House has BlackJack, House Wins!\n")
+                    player.saldo -= bet
+                    break
+                if not checkForBlackJack(dealerHand) and checkForBlackJack(player.playerHand):
+                    print("You have BlackJack, You Win!\n")
+                    player.saldo += bet
+                    break
                 print("Standoff")
                 print("As result you get your", bet, "$ back!\n")
                 break
