@@ -11,8 +11,9 @@ def youAsPlayer():
     player = Player(2000, playerHand)
 
     while True:
-        player.playerHand.clear()
-        dealerHand.clear()
+        if len(player.playerHand) > 0:
+            player.playerHand.clear()
+            dealerHand.clear()
 
         player.playerHand.append(random.choice(cards))
         player.playerHand.append(random.choice(cards))
