@@ -38,4 +38,5 @@ $ quit
 Hver gang du har mulighed for at indtaste et svar.
 
 ### Contact
-Christoffer Grand Hansen <Christofferhansen20@gmail.com>
+Christoffer Grand Hansen 
+<Christofferhansen20@gmail.com>
