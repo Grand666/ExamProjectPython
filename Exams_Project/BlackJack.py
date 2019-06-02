@@ -110,7 +110,6 @@ def youAsPlayer():
                 dealerHand.append(random.choice(cards))
                 print("Dealer hits")
                 print(dealerHand, "\n")
-            time.sleep(1)
 
         if insuranceBet > 0 and checkForBlackJack(dealerHand):
             player.saldo += insuranceBet * 2
