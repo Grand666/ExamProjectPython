@@ -1,5 +1,3 @@
-# ExamProjectPython
-
 ## BlackJack.py
 
 ### Description
