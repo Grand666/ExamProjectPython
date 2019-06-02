@@ -18,8 +18,11 @@ def youAsPlayer():
         player.playerHand.append(random.choice(cards))
         player.playerHand.append(random.choice(cards))
         dealerHand.append("X")
-        dealerHand.append(random.choice(cards))
+        dealerHand.append("Ace")
 
+        insuranceBet = 0
+
+        #players turn
         print("You have", player.saldo, "$ worth of chips left")
         print("Choose your bet?")
 
@@ -41,7 +44,10 @@ def youAsPlayer():
         print("The dealer has", dealerHand)
         print("You have", player.playerHand, "\n")
         
-        bet = int(bet)
+        try:
+            bet = int(bet)
+        except ValueError:
+            print("hmm")
 
         while getHandValue(player.playerHand) < 21:
             validAnswer = False
@@ -69,7 +75,14 @@ def youAsPlayer():
             newGame(player)
             continue
 
+        #Insurance
+        if "Ace" in dealerHand:
+            insuranceBet = askForInsurance(bet)
+            
+
+        #Dealers turn
         print("\nDealers turn")
+
         dealerHand.remove("X")
         dealerHand.insert(0, random.choice(cards))
         print(dealerHand,"\n")
@@ -99,38 +112,67 @@ def youAsPlayer():
                 print(dealerHand, "\n")
             time.sleep(3)
 
+        if insuranceBet > 0 and checkForBlackJack(dealerHand):
+            player.saldo += insuranceBet * 2
+        elif insuranceBet > 0 and not checkForBlackJack(dealerHand):
+            player.saldo -= insuranceBet
+            
+
         newGame(player)
 
 
+def askForInsurance(bet):
+    #Does the player want insurance?
+    while True:
+        answer = input("\nThe dealer has an Ace, do you want insurance? (y/n) \n").lower()
+        if answer == "y":
+            while True:
+                answer = input("How much du you want to insurance? \n")
+                if answer.lower() == "quit":
+                    sys.exit()
+                try:
+                    val = int(answer)
+                    if val > 0 and val <= bet/2:
+                        print("You chose to insurance", answer, "$")
+                        return val
+                    else:
+                        print("You can only insurance up to half of your bet\n")
+                except ValueError:
+                    print("Please input a number\n")
+        if answer == "n":
+            print("You chose not to take insurance")
+            return 0
+        if answer == "quit":
+            sys.exit()
 
 def newGame(player):
-        #Start new game?
-        while player.saldo < 50:
-            print("You don't have enough chips to play...")
-            answer = input("Would you like to buy more chips? (y/n) \n").lower()
-            if answer == "y":
-                while True:
-                    answer = input("How much?\n")
-                    if answer.lower() == "quit":
-                        sys.exit()                        
-                    try:
-                        val = int(answer)
-                        if val >= 50:
-                            player.saldo += val
-                            return
-                        else:
-                            print("The smallest chip costs 50 $")
-                    except ValueError:
-                        print("Please input a number")
-            if answer == "n":
-                print("Thanks for the games, please leave the table")
-                sys.exit()
-            if answer == "quit":
-                sys.exit()
+    #Does the player still have chips? 
+    while player.saldo < 50:
+        print("You don't have enough chips to play...")
+        answer = input("Would you like to buy more chips? (y/n) \n").lower()
+        if answer == "y":
+            while True:
+                answer = input("How much?\n")
+                if answer.lower() == "quit":
+                    sys.exit()                        
+                try:
+                    val = int(answer)
+                    if val >= 50:
+                        player.saldo += val
+                        return
+                    else:
+                        print("The smallest chip costs 50 $")
+                except ValueError:
+                    print("Please input a number")
+        if answer == "n":
+            print("Thanks for the games, please leave the table")
+            sys.exit()
+        if answer == "quit":
+            sys.exit()
 
 def checkForBlackJack(list):
     if len(list) == 2 and "Ace" in list:
-        if "Jack" in list or "Queen" in list or "King" in list:
+        if 10 in list or "Jack" in list or "Queen" in list or "King" in list:
             return True
     return False
 
