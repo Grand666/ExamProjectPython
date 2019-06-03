@@ -47,7 +47,7 @@ def youAsPlayer():
         try:
             bet = int(bet)
         except ValueError:
-            print("hmm")
+            print("Had trouble converting bet to an int")
 
         while getHandValue(player.playerHand) < 21:
             validAnswer = False
@@ -119,7 +119,6 @@ def youAsPlayer():
             player.saldo += insuranceBet * 2
         elif insuranceBet > 0 and not checkForBlackJack(dealerHand):
             player.saldo -= insuranceBet
-            
 
         newGame(player)
 
